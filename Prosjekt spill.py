@@ -154,7 +154,9 @@ while run:
             
     
     elf(x,y)
-    tekst(str(tabellnisse), 700, 10)
+    
+    tabell = 'NISSEN NAKEN = ' + str(nakennisse)
+    tekst(tabell, 600, 30)
     
     pygame.display.update()
         
