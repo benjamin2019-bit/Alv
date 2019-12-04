@@ -16,6 +16,10 @@ green = (34,139,34)
 
 elfimg = pygame.image.load("elf.png").convert()
 
+'''
+nisseimg = pygame.image.load("bilde.png").convert()
+'''
+
 font = pygame.font.Font("freesansbold.ttf", 32)
 
 
@@ -45,23 +49,64 @@ Tekst_1yL = [Tekst_1y, Tekst_1y-50]
 Tekst_2xL = [Tekst_2x, Tekst_2x-100]
 Tekst_2yL = [Tekst_2y, Tekst_2y-50]
 
+Lvl1=True
+Lvl2=False
+Lvl3=False
+Lvl4=False
+Lvl5=False
+Lvl6=False
+Lvl7=False
+Lvl8=False
+
+nissegreier = {"Lvl1": True}
+
+
+nakennisse = 0
+nisseLvl=0
+
  
 menu = 1
 run = True
 game = 0
 
-'''
-def Valgtre():
-    if Tekst_2xL[1]<x<Tekst_2xL[0] and Tekst_2yL[1]<y<Tekst_2yL[0]:
-        win.fill(black)
-        x = (display_width*0.45)
-        y = (display_height*0.8)
-    if Tekst_1xL[1]<x<Tekst_1xL[0] and Tekst_1yL[1]<y<Tekst_1yL[0]:
-        win.fill(black)
-        x = (display_width*0.45)
-        y = (display_height*0.8)
-'''
 
+def valgtre(a,b):
+    global x
+    global y
+    global nakennisse
+    global Lvl1
+    global Lvl2
+    global Lvl3
+    global Lvl4
+    global Lvl5
+    global Lvl6
+    global Lvl7
+    global Lvl8
+    global nisseLvl
+    if Tekst_2xL[1]<x<Tekst_2xL[0] and Tekst_2yL[1]<y<Tekst_2yL[0]:
+        x = (display_width*0.45)
+        y = (display_height*0.8)
+        win.fill(black)
+        Lvl1=False
+        Lvl2=True
+        
+        if b:
+            nakennisse+=1
+            nisseLvl=True
+            Lvl2=False
+                    
+    if Tekst_1xL[1]<x<Tekst_1xL[0] and Tekst_1yL[1]<y<Tekst_1yL[0]:
+        x = (display_width*0.45)
+        y = (display_height*0.8)
+        win.fill(black)
+        Lvl1=False
+        Lvl2=True
+        
+        if a:
+            nakennisse+=1
+            nisseLvl=True
+            Lvl2=False
+            
 while run:
     pygame.time.delay(100)
     
@@ -95,16 +140,21 @@ while run:
             y = (display_height*0.8)
     if game==1:
         win.fill(black)
-        tekst("Du befinner deg nå i nissens", hovedtekstx, hovedteksty)
-        tekst("Målet: Se nissen naken minst 3 ganger", hovedtekstx, hovedteksty+40)
-        tekst("Dør", Tekst_1x, Tekst_1y)
-        tekst("Dør 2", Tekst_2x, Tekst_2y)
-    
-    caro = 0
+        if Lvl1:
+            tekst("Du befinner deg nå i nissens", hovedtekstx, hovedteksty)
+            tekst("Målet: Se nissen naken minst 3 ganger", hovedtekstx, hovedteksty+40)
+            tekst("Dør", Tekst_1x, Tekst_1y)
+            tekst("Dør 2", Tekst_2x, Tekst_2y)
+            valgtre(False, True)
+        if Lvl2:
+            tekst("hei",100,100)
+        if nisseLvl:
+            tekst("Du fant nissen naken!", hovedtekstx, hovedteksty )
+            win.blit(elfimg, display_width//2, display_height//2)
             
     
     elf(x,y)
-    
+    tekst(str(tabellnisse), 700, 10)
     
     pygame.display.update()
         
