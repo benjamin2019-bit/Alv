@@ -100,7 +100,7 @@ while run:
         tekst("Dør", Tekst_1x, Tekst_1y)
         tekst("Dør 2", Tekst_2x, Tekst_2y)
     
-    
+    caro = 0
             
     
     elf(x,y)
