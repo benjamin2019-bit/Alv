@@ -7,7 +7,7 @@ display_height = 600
 
 win = pygame.display.set_mode((display_width,display_height))
 
-pygame.display.set_caption("Nissen og alven Onkel Edition")
+pygame.display.set_caption("Alvens våte drøm")
 
 black = (0,0,0)
 white = (255, 255, 255)
@@ -20,10 +20,11 @@ elfimg = pygame.image.load("elf.png").convert()
 nisseimg = pygame.image.load("bilde.png").convert()
 '''
 
-font = pygame.font.Font("freesansbold.ttf", 32)
 
 
-def tekst(t, X, Y):
+
+def tekst(t, X, Y, F):
+    font = pygame.font.Font("freesansbold.ttf", F)
     text = font.render(t, True, red, black)
     textRect = text.get_rect()
     textRect.center = (X, Y)
@@ -58,54 +59,68 @@ Lvl6=False
 Lvl7=False
 Lvl8=False
 
-nissegreier = {"Lvl1": True}
+Lvl = {"1": True, "2":False, "3":False, "4":False, 
+               "5":False, "6":False, "7":False, "8":False}
 
 
 nakennisse = 0
 nisseLvl=0
+tabell = 'NISSEN NAKEN = ' + str(nakennisse)
+tabell2 = "Du må nå se nissen naken "+str(3-nakennisse)+" ganger til"
 
  
 menu = 1
 run = True
 game = 0
+Level = 0
 
 
-def valgtre(a,b):
+def nTabell():
+    global nakennisse
+    global tabell
+    global tabell2
+    nakennisse +=1
+    tabell = 'NISSEN NAKEN = ' + str(nakennisse)
+    tabell2 = "Du må nå se nissen naken "+str(3-nakennisse)+" ganger til"
+
+def valgtre(a,b,c):
     global x
     global y
     global nakennisse
-    global Lvl1
-    global Lvl2
-    global Lvl3
-    global Lvl4
-    global Lvl5
-    global Lvl6
-    global Lvl7
-    global Lvl8
     global nisseLvl
+    global Lvl
     if Tekst_2xL[1]<x<Tekst_2xL[0] and Tekst_2yL[1]<y<Tekst_2yL[0]:
         x = (display_width*0.45)
         y = (display_height*0.8)
         win.fill(black)
-        Lvl1=False
-        Lvl2=True
-        
+        Lvl[str(c-1)]=False
+        Lvl[str(c)]=True
         if b:
-            nakennisse+=1
+            nTabell()
             nisseLvl=True
-            Lvl2=False
-                    
+            Lvl[str(c)]=False
     if Tekst_1xL[1]<x<Tekst_1xL[0] and Tekst_1yL[1]<y<Tekst_1yL[0]:
         x = (display_width*0.45)
         y = (display_height*0.8)
         win.fill(black)
-        Lvl1=False
-        Lvl2=True
-        
+        Lvl[str(c-1)]=False
+        Lvl[str(c)]=True
         if a:
-            nakennisse+=1
+            nTabell()
             nisseLvl=True
-            Lvl2=False
+            Lvl[str(c)]=False
+
+def nisseLvl2(a):
+    global nisseLvl
+    global Lvl
+    global x
+    global y
+    if 500<x<600 and 400<y<500:
+                win.fill(black)
+                nisseLvl=False
+                Lvl[a] = True
+                x = (display_width*0.45)
+                y = (display_height*0.8)
             
 while run:
     pygame.time.delay(100)
@@ -128,9 +143,9 @@ while run:
     win.fill(black)
     
     if menu==1:
-        tekst("Alvens Våte Drøm", hovedtekstx, hovedteksty)
-        tekst("Start", Tekst_1x, Tekst_1y)
-        tekst("Avslutt", Tekst_2x, Tekst_2y)
+        tekst("Alvens Våte Drøm", hovedtekstx, hovedteksty, 32)
+        tekst("Start", Tekst_1x, Tekst_1y, 32)
+        tekst("Avslutt", Tekst_2x, Tekst_2y, 32)
         if Tekst_2xL[1]<x<Tekst_2xL[0] and Tekst_2yL[1]<y<Tekst_2yL[0]:
             run=False
         if Tekst_1xL[1]<x<Tekst_1xL[0] and Tekst_1yL[1]<y<Tekst_1yL[0]:
@@ -140,23 +155,27 @@ while run:
             y = (display_height*0.8)
     if game==1:
         win.fill(black)
-        if Lvl1:
-            tekst("Du befinner deg nå i nissens", hovedtekstx, hovedteksty)
-            tekst("Målet: Se nissen naken minst 3 ganger", hovedtekstx, hovedteksty+40)
-            tekst("Dør", Tekst_1x, Tekst_1y)
-            tekst("Dør 2", Tekst_2x, Tekst_2y)
-            valgtre(False, True)
-        if Lvl2:
-            tekst("hei",100,100)
+        if Lvl["1"]:
+            Level=2
+            tekst("Du befinner deg nå i nissens", hovedtekstx, hovedteksty, 32)
+            tekst("Målet: Se nissen naken minst 3 ganger", hovedtekstx, hovedteksty+40, 32)
+            tekst("Dør", Tekst_1x, Tekst_1y, 32)
+            tekst("Dør 2", Tekst_2x, Tekst_2y, 32)
+            valgtre(False, True, 2)
+        if Lvl["2"]:
+            Level=3
+            tekst("hei",100,100, 20)
         if nisseLvl:
-            tekst("Du fant nissen naken!", hovedtekstx, hovedteksty )
-            win.blit(elfimg, display_width//2, display_height//2)
+            tekst("Du fant nissen naken!", hovedtekstx, hovedteksty, 32)
+            elf(display_width//2, display_height//2)
+            tekst(tabell2, 200, 550, 15)
+            tekst("Løp Videre", 600, 500, 20)
+            nisseLvl2(str(Level))
+                
             
     
     elf(x,y)
-    
-    tabell = 'NISSEN NAKEN = ' + str(nakennisse)
-    tekst(tabell, 600, 30)
+    tekst(tabell, 600, 30, 25)
     
     pygame.display.update()
         
